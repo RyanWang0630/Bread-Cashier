@@ -5,7 +5,7 @@ from collections import Counter
 import cv2
 from ultralytics import YOLO
 
-# 1. Bread Price Dictionary
+# 1. Pastries Price Dictionary
 pricebook = {
     "croissant": 55,
     "horn": 35,
@@ -14,13 +14,13 @@ pricebook = {
     "toast": 36,
 }
 
-# 2. Load YOLO Model
+# 2. Load your YOLO Model
 model = YOLO("best.pt")
 
 
-# 3. USB Camera Initialization Helper
+# 3. Camera Initialization
 def initialize_camera():
-    # Try DirectShow on Index 0, 1, and 2
+    # Try DirectShow on Index 0, 1, and 2 (different index for camera inputs)
     for index in [0, 1, 2]:
         cap = cv2.VideoCapture(index, cv2.CAP_DSHOW)
 
@@ -37,7 +37,7 @@ def initialize_camera():
 
             if ret and frame is not None:
                 print(
-                    f"✅ 成功啟用 USB 攝影機 (索引點: {index}, 後端: DirectShow)"
+                    f" Successfully enabled USB camera (Index: {index}, Backend: DirectShow)"
                 )
                 return cap
             cap.release()
@@ -53,7 +53,7 @@ def initialize_camera():
             ret, frame = cap.read()
             if ret and frame is not None:
                 print(
-                    f"✅ 成功啟用 USB 攝影機 (索引點: {index}, 後端: MSMF)"
+                    f" Successfully enabled USB camera (Index: {index}, Backend: MSMF)"
                 )
                 return cap
             cap.release()
@@ -61,29 +61,29 @@ def initialize_camera():
     return None
 
 
-# Launch Camera
+# Launching Camera
 cap = initialize_camera()
 
 if cap is None:
-    print("\n❌ 無法啟動攝影機！")
-    print("請確認：")
+    print("\n Unable to activate camera！")
+    print("please check：")
     print(
-        "1. Windows 設定 -> 隱私權與安全性 -> 相機 -> 已開啟「讓桌面應用程式存取您的相機」"
+        "1. Windows Settings -> Privacy & security -> Camera -> Turn on "Let desktop apps access your camera"
     )
-    print("2. 沒有其他程式（如 Zoom, Teams, Windows 相機 App）正在占用鏡頭")
-    print("3. USB 鏡頭已插緊（嘗試換到電腦後方獨立的 USB 3.0 插槽）\n")
+    print("2. No other apps are using the camera")
+    print("3. USB camera is securely plugged in (try switching to an independent USB 3.0 port on the back of the computer)/n")
     exit()
 
-print("請按下 's' 拍照進行辨識，或按 'q' 離開")
+print("Please press 's' to active frame detection, or 'q' to exit detection")
 
 try:
     while True:
         ret, frame = cap.read()
         if not ret or frame is None:
-            print("無法讀取畫面，嘗試重新獲取...")
+            print("Unable to read frame, attempting to re-fetch...")
             continue
 
-        # Display Live Preview
+        # Displaying Live Preview
         cv2.imshow('Camera - Press "s" to Scan, "q" to Quit', frame)
 
         # Cross-platform safe key detection
@@ -149,7 +149,7 @@ try:
 
             webbrowser.open("file://" + html_path)
 
-            # Freeze result image until key press, then return to camera stream
+            # Freeze result image until key pressed, then return to the camera stream
             cv2.waitKey(0)
             cv2.destroyWindow("Detection Result - Press ANY KEY to continue")
 
