@@ -27,5 +27,14 @@ Real-Time POS Feedback: Transmits detected item categories, individual prices, a
 Hardware
 
 Camera: Your own camera
-Software Language: C++ / Arduino Framework AI: Custom Model (YOLOv11) ; Roboflow
+Software Language: Python / Arduino Framework AI: Custom Model (YOLO) ; Roboflow
+
+//
+
+Arhictecture
+
+The camera captures a frame when a tray is placed on the checkout platform. The frame is processed by a custom YOLOv11 model trained on custom category datasets created in Roboflow. The AI analyzes the image to classify each distinct pastry type present on the tray. Once the pastries are confirmed and categorized, the system retrieves the individual unit prices from a built-in price matrix, multiplies them by the item counts, and determines the final total price. This itemized list along with the total cost is then sent directly to the POS screen or terminal for immediate customer payment.
+
+NOTE
+**if you train your model, you must locate a 'best.pt' file, that will be your model that you put into your code for the project and system to work**
 
