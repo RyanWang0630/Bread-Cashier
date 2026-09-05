@@ -90,7 +90,7 @@ try:
         key = cv2.waitKey(1) & 0xFF
 
         if key == ord("s"):
-            print("\n照片已拍下，開始辨識...")
+            print("\nFrame Captured, Activating Detection...")
 
             # Run YOLO model
             results = model(frame)[0]
@@ -104,13 +104,13 @@ try:
                 for bread, count in counts.items()
             )
 
-            print("--- 辨識結果 ---")
+            print("--- Detection Results ---")
             for bread, count in counts.items():
                 item_price = pricebook.get(bread, 0) * count
-                print(f"{bread}: {count} 個 (小計: {item_price} 元)")
+                print(f"{bread}: {count} # (小計: {item_price} $)")
 
-            print(f"總數量：{sum(counts.values())} 個")
-            print(f"總價格：{total_price} 元\n")
+            print(f"Quantity：{sum(counts.values())} #")
+            print(f"Amount：{total_price} $\n")
 
             # Plot annotated detections
             annotated = results.plot()
@@ -122,22 +122,22 @@ try:
 
             # Generate HTML Report
             items_html = "".join(
-                f"<li>{bread}: {count} 個</li>"
+                f"<li>{bread}: {count} #</li>"
                 for bread, count in counts.items()
             )
             html_content = f"""
             <html>
             <head>
                 <meta charset="utf-8">
-                <title>辨識結果</title>
+                <title>Detection Results</title>
             </head>
             <body style="font-family: Arial, sans-serif; margin: 20px;">
-                <h1>🍞 麵包辨識結果</h1>
+                <h1>Bread Detection Results</h1>
                 <img src="data:image/jpeg;base64,{base64_img}" style="max-width:600px; border-radius:8px;"><br>
-                <h3>明細：</h3>
+                <h3>Details：</h3>
                 <ul>{items_html}</ul>
-                <p><strong>總數量：</strong>{sum(counts.values())} 個</p>
-                <p><strong>總價格：</strong>{total_price} 元</p>
+                <p><strong>Quantity：</strong>{sum(counts.values())} #</p>
+                <p><strong>Amount：</strong>{total_price} $</p>
             </body>
             </html>
             """
@@ -160,4 +160,4 @@ finally:
     # Safely release camera hardware on crash or close
     cap.release()
     cv2.destroyAllWindows()
-    print("攝影機已順利關閉。")
+    print("Camera Successfully Closed。")
